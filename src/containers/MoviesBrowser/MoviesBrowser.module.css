@@ -1,0 +1,13 @@
+.MoviesBrowser {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  align-items: flex-start;
+}
+
+.MoviesBrowser .Content {
+  margin: 0 35px 0 15px;
+  width: 82%;
+  height: 100%;
+}

@@ -1,38 +1,70 @@
-.App {
-  text-align: center;
+@import url('https://fonts.googleapis.com/css?family=Ceviche+One&display=swap');
+body, input, button {
+  margin: 0;
+  padding: 0;
+  font-family: 'Open Sans', sans-serif;
+  color: #404040;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.noUi-base {
+  width: 94% !important;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.noUi-target {
+  width: 100%! important;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.noUi-horizontal {
+  height: 20px !important;
 }
 
-.App-link {
-  color: #61dafb;
+.noUi-target, .noUi-base {
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 10px !important;  
+  background: #e3e3e3 !important;
+  transition: background 0.3s ease;
+  outline: none;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.noUi-target:hover, .noUi-base:hover {
+  opacity: 1.0 !important;
+  background: #d3d3d3 !important;
+}
+
+.noUi-handle {
+  height: 20px !important;
+  width: 20px !important;
+  border: 1px solid #d1d1d1 !important;
+  border-radius: 50% !important;
+  box-shadow: none !important;
+  top: 0px !important;
+}
+
+.noUi-handle-lower::before, .noUi-handle-lower::after,
+.noUi-handle-upper::before, .noUi-handle-upper::after {
+  display: none !important;
+}
+
+.noUi-handle:hover {
+  cursor: pointer;
+}
+
+.noUi-handle:focus {
+  outline: 0;
+}
+
+.noUi-connects {
+  width: 108% !important;
+  border-radius: 10px !important;
+}
+
+.noUi-connect {
+  border-radius: 10px !important;
+  background-color: #a0a0a0 !important;
+  transition: background 0.3s ease;
+}
+
+.noUi-connect:hover {
+  background-color: #808080 !important;
 }

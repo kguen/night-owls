@@ -1,0 +1,14 @@
+.Sidebar {
+  display: block;
+  position: sticky;
+  top: 0;
+  width: 18%;
+  padding: 3px 40px;
+  height: 100vh;
+  box-sizing: border-box;
+  overflow-y: scroll;
+}
+
+.Sidebar::-webkit-scrollbar {
+  display: none;
+}

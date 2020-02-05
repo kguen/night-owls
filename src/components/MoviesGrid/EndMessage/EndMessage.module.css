@@ -1,0 +1,8 @@
+.EndMessage {
+  grid-column: 1 / span 6;
+  margin: auto;
+  box-sizing: border-box;
+  color: #aaa;
+  font-size: 2em;
+  padding: 2em 0;
+}

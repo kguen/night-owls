@@ -1,0 +1,22 @@
+.NavigationLinks {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 30px;
+  box-sizing: border-box;
+  height: 100%;
+  width: 36%;
+  font-size: 1.1em;
+}
+
+.NavigationLinks li {
+  transition: color 0.3s ease;
+}
+
+.NavigationLinks li:hover {
+  color: #a1a1a1;
+  cursor: pointer;
+}

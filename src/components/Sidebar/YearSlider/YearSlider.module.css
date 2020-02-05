@@ -1,0 +1,13 @@
+.YearSlider {
+  margin-top: 20px;
+  display: flex;
+  flex-flow: column;
+}
+
+.YearSlider .YearSliderSpan {
+  margin-top: 15px;
+  color: #a1a1a1;
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9em;
+}

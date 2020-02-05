@@ -1,0 +1,15 @@
+.RatingSlider {
+  padding-top: 20px;
+  display: flex;
+  flex-flow: column;
+  box-sizing: border-box;
+}
+
+.RatingSlider .Desc {
+  padding-top: 15px;
+  box-sizing: border-box;
+  color: #a1a1a1;
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9em
+}

@@ -1,26 +1,42 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react';
 import './App.css';
+import MoviesBrowser from './containers/MoviesBrowser/MoviesBrowser';
+import Layout from './containers/Layout/Layout';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+class App extends Component {
+  state = {
+    totalResults: null,
+    searchQuery: ''
+  }
+
+  handleTotalResultsChanged = (value) => {
+    this.setState({ totalResults: value });
+  }
+  handleSearchFormSubmitted = (event, value) => {
+    event.preventDefault();
+    window.scrollTo(0, 0);
+    this.setState({ searchQuery: value.trim() });
+  }
+  handleSearchQueryReset = () => {
+    this.setState({ searchQuery: '' });
+  }
+
+  render() {
+    return (
+      <div className="App">
+        <Layout 
+          totalResults={this.state.totalResults}
+          searchFormSubmitted={this.handleSearchFormSubmitted}
         >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+          <MoviesBrowser 
+            totalResultsChanged={this.handleTotalResultsChanged}
+            searchQuery={this.state.searchQuery}
+            searchQueryReset={this.handleSearchQueryReset}
+          />
+        </Layout>
+      </div>
+    );
+  }
 }
 
 export default App;

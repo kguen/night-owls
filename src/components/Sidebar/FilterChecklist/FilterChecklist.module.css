@@ -1,0 +1,17 @@
+.FilterChecklist {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  padding-top: 15px;
+  box-sizing: border-box;
+  color: #909090;
+}
+
+.FilterChecklist li {
+  padding: 5px 0;
+  box-sizing: border-box;
+}
+
+.FilterChecklist li label:hover {
+  cursor: pointer;
+}

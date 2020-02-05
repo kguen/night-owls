@@ -1,0 +1,47 @@
+.FilterBox {
+  padding: 15px 0;
+  border-bottom: 1px solid lightgray;
+  box-sizing: border-box;
+}
+
+.FilterBox .Title {
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.FilterBox .Title span {
+  font-size: 1.1em;
+  font-weight: 600;
+}
+
+.FilterBox .Title .Arrow i {
+  border: solid;
+  border-width: 0 1.5px 1.5px 0;
+  display: inline-block;
+  padding: 3px;
+}
+
+.UpArrow {
+  transform: rotate(-135deg);
+}
+
+.DownArrow {
+  transform: rotate(45deg);
+}
+
+.Hidden {
+  transition: max-height 0.3s, opacity 0.2s 0.1s, visibility 0s 0.3s;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.Show {
+  transition: max-height 0.3s, opacity 0.2s, visibility 0s;
+  opacity: 1;
+  visibility: visible;
+  display: flex;
+  flex-flow: column;
+}
