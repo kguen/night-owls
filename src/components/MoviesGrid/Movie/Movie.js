@@ -1,5 +1,6 @@
 import React from 'react';
 import classes from './Movie.module.css';
+import { Link } from 'react-router-dom';
 import IMDbLogo from '../../../assets/images/imdb.svg';
 import MetaLogo from '../../../assets/images/metacritic.svg';
 import TMDbLogo from '../../../assets/images/tmdb.svg';
@@ -31,7 +32,10 @@ const Movie = (props) => {
     rating = data.rt_score;
   }
   return data && (
-    <a className={classes.Movie} href="/">
+    <Link 
+      className={classes.Movie} 
+      to={`/${data.format}/${data.id}`}
+    >
       <img
         className={classes.Poster}
         alt={data.title || data.name} 
@@ -76,7 +80,7 @@ const Movie = (props) => {
             className={classes.Icon}/>
         </div>
       </span>
-    </a>
+    </Link>
   );
 }
 

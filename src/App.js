@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import './App.css';
 import MoviesBrowser from './containers/MoviesBrowser/MoviesBrowser';
 import Layout from './containers/Layout/Layout';
+import MovieDetails from './components/MovieDetails/MovieDetails';
 
 class App extends Component {
   state = {
@@ -23,18 +25,26 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
-        <Layout 
-          totalResults={this.state.totalResults}
-          searchFormSubmitted={this.handleSearchFormSubmitted}
-        >
-          <MoviesBrowser 
-            totalResultsChanged={this.handleTotalResultsChanged}
-            searchQuery={this.state.searchQuery}
-            searchQueryReset={this.handleSearchQueryReset}
-          />
-        </Layout>
-      </div>
+      <Router>
+        <div className="App">
+          <Layout 
+            totalResults={this.state.totalResults}
+            searchFormSubmitted={this.handleSearchFormSubmitted}
+          >
+            <Switch>
+              <Route path='/' exact>
+                <MoviesBrowser 
+                  totalResultsChanged={this.handleTotalResultsChanged}
+                  searchQuery={this.state.searchQuery}
+                  searchQueryReset={this.handleSearchQueryReset}
+                />
+              </Route>
+              <Route path='/:format/:id' exact component={MovieDetails} />
+            </Switch>
+            
+          </Layout>
+        </div>
+      </Router>
     );
   }
 }
