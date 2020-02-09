@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import classes from './MoviesBrowser.module.css';
 import axios from 'axios';
+import queryString from 'query-string';
 import Sidebar from '../../components/Sidebar/Sidebar';
 import MoviesGrid from '../../components/MoviesGrid/MoviesGrid';
 import NavigationTabs from '../../components/NavigationTabs/NavigationTabs';
@@ -12,8 +13,8 @@ const formatList = [
   { value: 'movie', label: 'Movie' },
   { value: 'tv', label: 'TV / Series' }
 ], ratingSystemList = [
-  { value: 1, label: 'TMDb (default)' },
-  { value: 0, label: 'IMDb'},
+  { value: 0, label: 'IMDb (default)'},
+  { value: 1, label: 'TMDb' },
   { value: 2, label: 'Metacritic' },
   { value: 3, label: 'RT (critics)' }
 ], decadeList = [
@@ -45,10 +46,40 @@ const formatList = [
   ]
 }
 
+const getGenres = async (format) => {
+  const response = await axios.get('/api/genres', {
+    params: { format }
+  });
+  return response.data;
+}
+
+const getFullData = async (format, genres, rating, fromYear, toYear, page, withQuery, searchQuery, tab) => {
+  const response = await axios.get('/api/movies', {
+    params: { format, genres, rating, fromYear, toYear, page, withQuery, searchQuery, tab }
+  });
+  return response.data;
+}
+
+const getSearchDesc = async (query) => {
+  const queryObj = queryString.parse(query);
+  const data = await Promise.all(
+    Object.keys(queryObj).map(async key => {
+      const id = queryObj[key];
+      const format = key === 'with_people' ? 'person' : 'keyword';
+      const response = await axios.get('/api/others', { 
+        params: { format, id } 
+      });
+      return response.data && response.data.name;
+    })
+  );
+  return data;
+}
+
 class MoviesBrowser extends Component {
   state = {
     fetchedData: [],
     fetchedGenres: [],
+    searchDesc: [],
     pageCount: 1,
     hasData: true,
     ratingSystem: ratingSystemList[0].value,
@@ -162,36 +193,27 @@ class MoviesBrowser extends Component {
     this.setState({ activeTab: value, pageCount: 1 });
   }
 
-  getFullData = async (format, genres, rating, fromYear, toYear, page, query, tab) => {
-    const response = await axios.get('/api/movies', {
-      params: { format, genres, rating, fromYear, toYear, page, query, tab }
-    });
-    return response.data;
-  }
-
-  getGenres = async (format) => {
-    const response = await axios.get('/api/genres', {
-      params: { format }
-    });
-    return response.data;
-  }
-
   async componentDidMount() {
+    window.scroll({ top: 0, behavior: 'smooth' });
+    await this.props.searchQueryReset();
     const format = this.state.filter.format, 
       genres = this.state.filter.genres,
       rating = this.state.filter.minRating,
       fromYear = this.state.filter.fromYear,
       toYear = this.state.filter.toYear,
       page = this.state.pageCount,
-      query = this.props.searchQuery,
+      searchQuery = this.props.searchQuery,
+      withQuery = this.props.location.search.slice(1),
       tab = navigationTabList[this.state.filter.format][this.state.activeTab].value;
-    const fetchedData = await this.getFullData(format, genres, rating, fromYear, toYear, page, query, tab);
-    const fetchedGenres = await this.getGenres(format);
+    const fetchedData = await getFullData(format, genres, rating, fromYear, toYear, page, withQuery, searchQuery, tab);
+    const fetchedGenres = await getGenres(format);
+    const searchDesc = await getSearchDesc(this.props.location.search);
     this.props.totalResultsChanged(fetchedData.total_results);
     this.setState({
       fetchedData: fetchedData.data,
       hasData: !!fetchedData.data.length,
-      fetchedGenres
+      fetchedGenres,
+      searchDesc
     });
   }
 
@@ -213,7 +235,7 @@ class MoviesBrowser extends Component {
         window.scroll({ top: 0, behavior: 'smooth' });
       }
       if (prevState.filter.format !== this.state.filter.format) {
-        const fetchedGenres = await this.getGenres(this.state.filter.format);
+        const fetchedGenres = await getGenres(this.state.filter.format);
         await this.setState(prevState => {
           return {
             fetchedGenres, 
@@ -230,9 +252,10 @@ class MoviesBrowser extends Component {
         fromYear = this.state.filter.fromYear,
         toYear = this.state.filter.toYear,
         page = this.state.pageCount,
-        query = this.props.searchQuery,
+        searchQuery = this.props.searchQuery,
+        withQuery = this.props.location.search.slice(1),
         tab = navigationTabList[this.state.filter.format][this.state.activeTab].value;
-      const fetchedData = await this.getFullData(format, genres, rating, fromYear, toYear, page, query, tab);
+      const fetchedData = await getFullData(format, genres, rating, fromYear, toYear, page, withQuery, searchQuery, tab);
       if (this.state.pageCount === 1) {
         this.props.totalResultsChanged(fetchedData.total_results);
         this.setState({ 
@@ -251,7 +274,7 @@ class MoviesBrowser extends Component {
   }
 
   render() {
-    let genreList = this.state.fetchedGenres.map(item => {
+    const genreList = this.state.fetchedGenres.map(item => {
       return { label: item.name, value: item.id }
     });
     return (
@@ -277,6 +300,14 @@ class MoviesBrowser extends Component {
             activeTab={this.state.activeTab}
             activeTabChanged={this.handleActiveTabValueChanged}
           />
+          { (this.state.searchDesc.length
+              && this.state.filter.format === 'movie'
+              && navigationTabList['movie'][this.state.activeTab].value !== 'trending'
+              && this.props.searchQuery === '')
+            ? <span className={classes.SearchDesc}>
+                Search results for: '{this.state.searchDesc.join(', ')}'
+              </span> 
+            : null }
           <MoviesGrid
             hasData={this.state.hasData}
             data={this.state.fetchedData}

@@ -6,6 +6,7 @@ const Layout = (props) => {
   return (
     <>
       <Toolbar 
+        withQuery={props.withQuery}
         totalResults={props.totalResults}
         formSubmitted={props.searchFormSubmitted}
       />

@@ -1,7 +1,7 @@
 .Movie {
   position: relative;
   display: block;
-  height: 288px;
+  height: inherit;
   font-weight: 600;
   font-size: 0.9em;
   border-radius: 12px;
@@ -82,12 +82,17 @@
 }
 
 .Movie .Rating span.Meta {
-  margin-left: 0.5em;
-  padding: 0 4px 2px 4px;
   color: #fff;
 }
 
-.Movie .Rating .Positive {
+.Movie .Rating span.Meta.Positive,
+.Movie .Rating span.Meta.Mixed,
+.Movie .Rating span.Meta.Negative {
+  margin-left: 0.5em;
+  padding: 0 4px 2px 4px;
+}
+
+.Movie .Rating span.Meta.Positive {
   background-color: #6c3;
 }
 
@@ -110,9 +115,7 @@
 
 .Movie .Title {
   position: absolute;
-  left: 0;
-  right: 0;
-  margin: auto;
+  width: 100%;
   padding: 0 17px;
   box-sizing: border-box;
   bottom: 17px;
@@ -130,7 +133,6 @@
   justify-content: space-between;
   align-items: center;
   width: 10%;
-  height: 40%;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -176,6 +178,7 @@
   transition: background 0.2s ease;
   width: 2.1em;
   line-height: 2.1em;
+  margin: .25em 0;
   border-radius: 50%;
   text-align: center;
   z-index: 2;

@@ -4,15 +4,17 @@
 }
 
 .Container h1 {
-  float: left;
-  position: relative;
   margin: 0;
   margin-bottom: .6em;
   font-size: 2.4em;
   font-weight: 550;
 }
 
-.Container h1 .Year {
+.Container .Title {
+  float: left;
+}
+
+.Container .Title .Year {
   position: relative;
   bottom: .3em;
   margin-left: .7em;
@@ -32,14 +34,48 @@
   height: 2.1em;
 }
 
-.Container .Rating .IMDbLogo {
+.Container .Rating .IMDb,
+.Container .Rating .TMDb,
+.Container .Rating .Meta,
+.Container .Rating .RT {
   margin-right: .7em;
   height: 100%;
+}
+
+.Container .Rating .TMDb {
+  height: 120%;
+}
+
+.Container .Rating .RT {
+  height: 110%;
+}
+
+.Container .Rating .Meta {
+  height: 130%;
 }
 
 .Container .Rating span {
   font-size: 1.7em;
   font-weight: 550;
+}
+
+.Container  .Rating .Positive,
+.Container  .Rating .Mixed,
+.Container  .Rating .Negative {
+  padding: .1em .3em;
+  box-sizing: border-box;
+}
+
+.Positive {
+  border: 4px solid #6c3;
+}
+
+.Mixed {
+  border: 4px solid #fc3;
+}
+
+.Negative {
+  border: 4px solid #f00;
 }
 
 .Container .Rating .VoteCount {
@@ -50,17 +86,24 @@
 .Container .Overview {
   margin: 0;
   clear: both;
-}
-
-.Container .Overview p {
   font-size: 1.3em;
   line-height: 1.6em;
   text-align: justify;
 }
 
+.Container .Overview .MoreDetails {
+  color: #f64b3c;
+}
+
+.Container .Overview .MoreDetails:hover {
+  cursor: pointer;
+  color: #c81912;
+  text-decoration: underline;
+}
+
 .Container .AddTo {
   float: left;
-  margin-top: 2.5em;
+  margin-top: 4em;
   display: flex;
 }
 
@@ -108,7 +151,7 @@
 } 
 
 .Container .Links {
-  margin-top: 2.5em;
+  margin-top: 4em;
   float: right;
   display: flex;
 }
@@ -126,11 +169,14 @@
   text-transform: uppercase;
 }
 
-.Container iframe {
-  width: 100%;
-  height: 70vh;
-  clear: both;
-  margin: 2.5em 0;
+.Container .Links .IMDb {
+  color: #000;
+  background: #dba506;
+}
+
+.Container .Links .TMDb {
+  color: #01d277;
+  background: #081c24;
 }
 
 .Container .Links .Facebook {
@@ -144,6 +190,47 @@
 }
 
 .Container .Links .Google {
-  color: #DB4437;
+  color: #db4437;
   background: #eee;
+}
+
+.Container iframe {
+  width: 100%;
+  height: 70vh;
+  clear: both;
+  margin: 1.5em 0 0 0;
+}
+
+.Container .Similar {
+  padding-top: 1.5em;
+  clear: both;
+}
+
+.Container .SimilarDesc {
+  font-size: 1.3em;
+  color: #999;
+}
+
+.Container .Carousel {
+  margin-top: 2em;
+  padding: .4em 1em;
+  box-sizing: border-box;
+  position: absolute;
+  left: 0;
+  overflow-x: auto;
+  width: 100vw;
+  white-space: nowrap;
+}
+
+.Container .Carousel .ItemContainer {
+  opacity: .7;
+  display: inline-block;
+  padding: .7em;
+  width: 165px;
+  height: 240px;
+  transition: all .15s ease;
+}
+
+.Container .Carousel .ItemContainer:hover {
+  opacity: 1;
 }

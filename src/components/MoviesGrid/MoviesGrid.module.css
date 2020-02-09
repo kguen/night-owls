@@ -1,6 +1,7 @@
 .MoviesGrid {
   position: relative;
   margin-top: 35px;
+  padding-bottom: 10px;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
   grid-gap: 15px;
@@ -10,4 +11,8 @@
 
 .MoviesGrid::-webkit-scrollbar {
   display: none;
+}
+
+.MoviesGrid .Wrapper {
+  height: 288px;
 }

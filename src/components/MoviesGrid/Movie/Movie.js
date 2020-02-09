@@ -34,7 +34,7 @@ const Movie = (props) => {
   return data && (
     <Link 
       className={classes.Movie} 
-      to={`/${data.format}/${data.id}`}
+      to={`/${data.format}/${ratingSystem}/${data.id}`}
     >
       <img
         className={classes.Poster}

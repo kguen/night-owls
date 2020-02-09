@@ -1,5 +1,6 @@
 import React from 'react';
 import classes from './InfoCards.module.css';
+import { Link } from 'react-router-dom';
 
 const InfoCards = (props) => {
   return (
@@ -9,9 +10,12 @@ const InfoCards = (props) => {
       </h3>
       <div className={classes.List}>
         {props.list && props.list.map(item => 
-          <a key={item[props.keyProp ? props.keyProp : 'id']} href="/">
+          <Link 
+            key={item.id} 
+            to={`/search?${props.link || 'with_people'}=${item.id}`}
+          >
             {item.name}
-          </a>
+          </Link>
         ) }
       </div>
     </>

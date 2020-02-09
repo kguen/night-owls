@@ -11,3 +11,10 @@
   width: 82%;
   height: 100%;
 }
+
+.MoviesBrowser .Content .SearchDesc {
+  font-size: 1.1em;
+  color: #a1a1a1;
+  font-style: italic;
+  font-weight: 200;
+}

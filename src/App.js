@@ -14,11 +14,14 @@ class App extends Component {
   handleTotalResultsChanged = (value) => {
     this.setState({ totalResults: value });
   }
-  handleSearchFormSubmitted = (event, value) => {
+  
+  handleSearchFormSubmitted = (event) => {
     event.preventDefault();
+    event.target.search.blur();
     window.scrollTo(0, 0);
-    this.setState({ searchQuery: value.trim() });
-  }
+    this.setState({ searchQuery: event.target.search.value.trim(), withQuery: '' });
+  } 
+  
   handleSearchQueryReset = () => {
     this.setState({ searchQuery: '' });
   }
@@ -29,19 +32,28 @@ class App extends Component {
         <div className="App">
           <Layout 
             totalResults={this.state.totalResults}
+            withQuery={this.state.withQuery}
             searchFormSubmitted={this.handleSearchFormSubmitted}
           >
             <Switch>
-              <Route path='/' exact>
-                <MoviesBrowser 
-                  totalResultsChanged={this.handleTotalResultsChanged}
-                  searchQuery={this.state.searchQuery}
-                  searchQueryReset={this.handleSearchQueryReset}
-                />
-              </Route>
-              <Route path='/:format/:id' exact component={MovieDetails} />
+              <Route 
+                path='/:format/:ratingSystem/:id/' exact 
+                component={MovieDetails} 
+              />
+              <Route 
+                path='/'
+                render={
+                  (props) => <MoviesBrowser
+                    {...props}
+                    totalResultsChanged={this.handleTotalResultsChanged}
+                    searchQuery={this.state.searchQuery}
+                    searchQueryReset={this.handleSearchQueryReset}
+                    withQueryChanged={this.handleWithQueryChanged}
+                  /> 
+                } 
+              />
+                
             </Switch>
-            
           </Layout>
         </div>
       </Router>

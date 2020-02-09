@@ -16,11 +16,17 @@ const MoviesGrid = (props) => {
       endMessage={<EndMessage />}
       scrollThreshold={1.0}
     >
-      {props.data.length ? props.data.map(item => <Movie
-        key={item.imdbID || item.id} 
-        data={item}
-        ratingSystem={props.ratingSystem}
-      />) : null}
+      {props.data.length ? props.data.map(item => 
+        <div 
+          className={classes.Wrapper} 
+          key={item.id}
+        >
+          <Movie
+            data={item}
+            ratingSystem={props.ratingSystem}
+          />
+        </div>
+      ) : null}
     </InfiniteScroll>
   );
 }
