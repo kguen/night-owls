@@ -6,7 +6,7 @@ const Toolbar = (props) => {
   return (
     <div className={classes.Toolbar}>
       <div className={classes.Logo}>
-        <a href="/">NIGHT&nbsp;&nbsp;OWLS</a>
+        <a href="/">Movie&nbsp;Hub</a>
       </div>
       <form onSubmit={event => props.formSubmitted(event)}>
         <input

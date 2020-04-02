@@ -121,6 +121,7 @@
   bottom: 17px;
   font-size: 1em;
   text-align: center;
+  white-space: pre-line;
   color: #fff;
 }
 

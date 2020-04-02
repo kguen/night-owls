@@ -5,6 +5,7 @@ import queryString from 'query-string';
 import Sidebar from '../../components/Sidebar/Sidebar';
 import MoviesGrid from '../../components/MoviesGrid/MoviesGrid';
 import NavigationTabs from '../../components/NavigationTabs/NavigationTabs';
+import Loader from '../../components/MoviesGrid/Loader/Loader';
 
 const DEFAULT_FROM_YEAR = 1900,
   DEFAULT_TO_YEAR = (new Date()).getFullYear();
@@ -82,6 +83,7 @@ class MoviesBrowser extends Component {
     searchDesc: [],
     pageCount: 1,
     hasData: true,
+    loading: true,
     ratingSystem: ratingSystemList[0].value,
     activeTab: 0,
     filter: {
@@ -195,6 +197,7 @@ class MoviesBrowser extends Component {
 
   async componentDidMount() {
     window.scroll({ top: 0, behavior: 'smooth' });
+    document.title = 'Find something to watch - Movie Hub';
     await this.props.searchQueryReset();
     const format = this.state.filter.format, 
       genres = this.state.filter.genres,
@@ -211,9 +214,10 @@ class MoviesBrowser extends Component {
     this.props.totalResultsChanged(fetchedData.total_results);
     this.setState({
       fetchedData: fetchedData.data,
-      hasData: !!fetchedData.data.length,
+      hasData: page !== fetchedData.total_pages,
       fetchedGenres,
-      searchDesc
+      searchDesc,
+      loading: false
     });
   }
 
@@ -229,10 +233,11 @@ class MoviesBrowser extends Component {
       || prevState.activeTab !== this.state.activeTab
     ) {
       if (prevProps.searchQuery !== this.props.searchQuery && this.props.searchQuery !== '') {
-        await this.setState({ pageCount: 1 });  
+        await this.setState({ pageCount: 1, loading: true });  
       }
       if (this.state.pageCount === 1) {
-        window.scroll({ top: 0, behavior: 'smooth' });
+        window.scroll({ top: 0, behavior: 'smooth' })
+        await this.setState({ loading: true });
       }
       if (prevState.filter.format !== this.state.filter.format) {
         const fetchedGenres = await getGenres(this.state.filter.format);
@@ -256,16 +261,17 @@ class MoviesBrowser extends Component {
         withQuery = this.props.location.search.slice(1),
         tab = navigationTabList[this.state.filter.format][this.state.activeTab].value;
       const fetchedData = await getFullData(format, genres, rating, fromYear, toYear, page, withQuery, searchQuery, tab);
-      if (this.state.pageCount === 1) {
+      if (page === 1) {
         this.props.totalResultsChanged(fetchedData.total_results);
         this.setState({ 
-          hasData: !!fetchedData.data.length,
-          fetchedData: fetchedData.data 
+          hasData: page !== fetchedData.total_pages,
+          fetchedData: fetchedData.data,
+          loading: false 
         });
       } else {
         this.setState(prevState => {
           return {
-            hasData: !!fetchedData.data.length,
+            hasData: page !== fetchedData.total_pages,
             fetchedData: prevState.fetchedData.concat(fetchedData.data) 
           }
         });
@@ -308,12 +314,14 @@ class MoviesBrowser extends Component {
                 Search results for: '{this.state.searchDesc.join(', ')}'
               </span> 
             : null }
-          <MoviesGrid
-            hasData={this.state.hasData}
-            data={this.state.fetchedData}
-            ratingSystem={this.state.ratingSystem}
-            infiniteScroll={this.handlePageCountIncreased}
-          />
+          { this.state.loading 
+            ? <div className={classes.Loader}><Loader/></div> 
+            : <MoviesGrid
+                hasData={this.state.hasData}
+                data={this.state.fetchedData}
+                ratingSystem={this.state.ratingSystem}
+                infiniteScroll={this.handlePageCountIncreased}
+              /> }
         </div>
       </div>
     )

@@ -1,3 +1,8 @@
+.Loader {
+  text-align: center;
+  min-height: 81vh;
+}
+
 .Container {
   width: 63%;
   margin: 0 auto;

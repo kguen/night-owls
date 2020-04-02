@@ -37,11 +37,7 @@ class App extends Component {
           >
             <Switch>
               <Route 
-                path='/:format/:ratingSystem/:id/' exact 
-                component={MovieDetails} 
-              />
-              <Route 
-                path='/'
+                exact path='/'
                 render={
                   (props) => <MoviesBrowser
                     {...props}
@@ -52,7 +48,10 @@ class App extends Component {
                   /> 
                 } 
               />
-                
+              <Route 
+                path='/:format/:ratingSystem/:id/'
+                component={MovieDetails} 
+              />
             </Switch>
           </Layout>
         </div>

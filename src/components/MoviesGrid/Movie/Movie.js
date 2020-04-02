@@ -60,9 +60,9 @@ const Movie = (props) => {
                 ? data.last_air_date.substr(0, 4) : '' 
             }`)
       }</span>
-      <span className={classes.Title}>
+      <div className={classes.Title}>
         {data.title || data.name}
-      </span>
+      </div>
       <span className={classes.AddTo}>
         <div data-tooltip="Add to Watchlist" 
           className={classes.Circle}>

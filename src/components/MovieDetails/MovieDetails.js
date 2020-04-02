@@ -15,10 +15,14 @@ const logos = [IMDbLogo, TMDbLogo, MetaLogo, RTLogo],
   ratingSystemClasses = ['IMDb', 'TMDb', 'Meta', 'RT'];
 
 const getDetails = async (format, id) => {
-  const response = await axios.get('/api/details', {
+  const { data } = await axios.get('/api/details', {
     params: { format, id }
   });
-  return response.data;
+  const itemTitle = (data.title || data.name);
+  const itemYear = format === 'movie' 
+    ? (data.release_date && data.release_date.substr(0, 4))
+    : (data.first_air_date && data.first_air_date.substr(0, 4));
+  return { ...data, itemTitle, itemYear};
 }
 
 class MovieDetails extends Component {
@@ -32,6 +36,7 @@ class MovieDetails extends Component {
     window.scroll({ top: 0, behavior: 'smooth' });
     const { params } = this.props.match;
     const data = await getDetails(params.format, params.id);
+    document.title = `${data.itemTitle} (${data.itemYear}) - Movie Hub`;
     this.setState({ data, loading: false });
   }
 
@@ -40,7 +45,8 @@ class MovieDetails extends Component {
       const { params } = this.props.match;
       await this.setState({ loading: true });
       const data = await getDetails(params.format, params.id);
-      this.setState({ data, loading: false });
+      document.title = `${data.itemTitle} (${data.itemYear}) - Movie Hub`;
+      this.setState({ data, loading: false, showDetails: false });
     }
   }
 
@@ -53,7 +59,6 @@ class MovieDetails extends Component {
   render() {
     const { params } = this.props.match, { data } = this.state;
     const ratingSystem = params.ratingSystem;
-    const itemTitle = data && (data.title || data.name);
     let rating, voteCount, metaColor;
     if (!this.state.loading) {
       if (ratingSystem === '0') {
@@ -76,20 +81,20 @@ class MovieDetails extends Component {
       }
     }
     return this.state.loading 
-    ? <div style={{textAlign: 'center', minHeight: '81vh'}}>
+    ? <div className={classes.Loader}>
         <Loader />
       </div>
     : ( 
       <div className={classes.Container}>
         <h1 className={classes.Title}>
-          <span>{itemTitle}</span>
+          <span>{data.itemTitle}</span>
           <span className={classes.Year}>{
             params.format === 'movie' 
-              ? (data.release_date && data.release_date.substr(0, 4))
-              : (data.first_air_date && `${data.first_air_date.substr(0, 4)}-${
+              ? data.itemYear
+              : `${data.itemYear}-${
                 data.status === 'Ended'
                   ? data.last_air_date.substr(0, 4) : '' 
-              }`)
+              }`
           }</span>
         </h1>
         <div className={classes.Rating}>
@@ -138,10 +143,7 @@ class MovieDetails extends Component {
         </span>
         <span className={classes.Links}>
           <a 
-            href={`https://google.com/search?q=${itemTitle.split(' ').join('+')} ${ 
-              params.format === 'movie' 
-              ? (data.release_date && data.release_date.substr(0, 4))
-              : (data.first_air_date && data.first_air_date.substr(0, 4))} ${params.format}`} 
+            href={`https://google.com/search?q=${data.itemTitle.split(' ').join('+')} ${data.itemYear}`} 
             className={classes.Google}
           >Google</a>
           <a href={`https://themoviedb.org/${params.format}/${data.id}`} className={classes.TMDb}>TMDB</a>
@@ -155,7 +157,7 @@ class MovieDetails extends Component {
           src={`https://www.youtube.com/embed/${data.video.key}`} 
           frameBorder="0" 
           allowFullScreen
-          title={itemTitle}
+          title={data.itemTitle}
         >
         </iframe> }
         <h1 className={classes.Similar}>Similar titles</h1>
